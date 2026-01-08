@@ -46,10 +46,10 @@ We successfully validated the specificity of our oligo libraries through fluores
    conda activate Nupack
    ```
 4. **Dowload your genomic data:**  
-   You need three fasta files to design oligopaints:
-   - Male genome assembly (.fasta)
-   - Chromosome or region target to design oligos (.fasta)
-   - Male genome assembly without the target chromosome/region (.fasta)
+   You need three fasta and two fastq files to design oligopaints:
+   - Male genome assembly (.fna)
+   - Chromosome or region target to design oligos (.fna)
+   - Male genome assembly without the target chromosome/region (.fna)
    - Female reads (*fastq.gz)
    - Male reads (*fastq.gz)
 
@@ -63,7 +63,7 @@ After identifying Y-linked scaffolds/contigs, one of them can be selected for ol
 Oligo design for a Y-linked regions follows a workflow similar to that described in *Repetitive Oligopaints for X/A Chromosome* manual (README.md)
 Specifically, follow the 1-7 steps in **Pipeline** section of For_AX_chromosome directory
 
-These steps include
+These steps include:
 1. **Discover candidate oligos**  
 2. **Mapping candidate oligos to genome**  
 3. **Select single-copy oligos** 
