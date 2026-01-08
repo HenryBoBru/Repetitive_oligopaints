@@ -12,7 +12,7 @@
 This repository contains the scripts and pipeline developed for the manuscript:  
 "Deciphering Chromosome Fusion in *D. miranda*'s Neo-Sex Chromosome through Single-Copy and Repetitive Oligo Probes" 
 
-This project focuses on designing Repetitive Oligopaint probes for Y chromosomes by integrating the OligoY approach (https://github.com/isabela42/OligoY) to OligoMiner (https://github.com/beliveau-lab/OligoMiner).  
+This project focuses on designing Single-copy and Repetitive Oligopaint probes for the Y chromosome by integrating the OligoY approach (https://github.com/isabela42/OligoY) to OligoMiner (https://github.com/beliveau-lab/OligoMiner).  
 We successfully validated the specificity of our oligo libraries through fluorescence in situ hybridization (FISH). 
 
 ---
