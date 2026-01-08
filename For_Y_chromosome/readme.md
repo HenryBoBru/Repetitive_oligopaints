@@ -57,13 +57,12 @@ We successfully validated the specificity of our oligo libraries through fluores
 
 1. **Identification of Y-linked scaffolds/contigs**
    
-We used the Y-Genome Scan (YGS) approach (Carvalho & Clark, 2013) to identify Y-linked scaffolds or contigs. Detailed instructions are provided in the YGS section of the OligoY repository (https://github.com/isabela42/OligoY).
-
+We used the Y-Genome Scan (YGS) approach (Carvalho & Clark, 2013) to identify Y-linked scaffolds or contigs. Detailed instructions are provided in the YGS section of the OligoY repository (https://github.com/isabela42/OligoY).  
 After identifying Y-linked scaffolds/contigs, one of them can be selected for oligo design.
 
 2. **Oligos design**
    
-Oligo design for a Y-linked regions follows a workflow similar to that described in *Repetitive Oligopaints for X/A Chromosome* manual (README.md).
+Oligo design for a Y-linked regions follows a workflow similar to that described in *Repetitive Oligopaints for X/A Chromosome* manual (README.md).  
 Specifically, follow the 1-7 steps in **Pipeline** section of For_AX_chromosome directory
 
 These steps include:
