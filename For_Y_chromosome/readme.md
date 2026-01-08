@@ -62,7 +62,7 @@ After identifying Y-linked scaffolds/contigs, one of them can be selected for ol
 
 2. **Oligos design**
    
-Oligo design for a Y-linked regions follows a workflow similar to that described in *Repetitive Oligopaints for X/A Chromosome* manual (README.md)
+Oligo design for a Y-linked regions follows a workflow similar to that described in *Repetitive Oligopaints for X/A Chromosome* manual (README.md).
 Specifically, follow the 1-7 steps in **Pipeline** section of For_AX_chromosome directory
 
 These steps include:
