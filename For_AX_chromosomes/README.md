@@ -66,17 +66,17 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    ```bash
    #Index the genome
    bowtie2-build /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna /change/path/to/Dmel/Dmel_complete # index the genome to map oligos
-        
+   #Mapping     
    bowtie2 -x /change/path/to/Dmel/Dmel_complete  -U /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.sam
    ```
    - For single copy + repetitive oligos
    ```bash
-   You can use: sed -e '/NC_004353.4/,+1d' /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna > /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna # to remove the target chromosome of the male genome 
+   You can use: sed -e '/NC_004353.4/,+1d' /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna > /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna # to remove the target chromosome of the male genome assembly
    ```
    ```bash
    #Index the genome without target chromosome
    bowtie2-build /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna /change/path/to/Dmel/Dmel_NoChr4 # index the genome to map oligos
-           
+   #Mapping        
    bowtie2 -x /change/path/to/Dmel/Dmel_NoChr4 -U /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All.sam
    ```
 
@@ -89,11 +89,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
 4. **Select repetitive oligos**  
 <sup> Note: The complete set of oligos are firstly obtained. The complete set of oligos are made up of single-copy and repetitive oligos. Therefore, we have to subtract single-copy oligos (step 3 output) from the complete set of oligos. </sup>
    
-   - Get all oligos
+   - Obtain all oligos
    ```bash
    python /change/path/to/OligoMiner/outputClean.py -0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All.sam -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All
    ```
-   - Get repetitive oligos
+   - Obtain repetitive oligos
    ```bash
    awk 'FILENAME != ARGV[2] { m[$1,$2, $3] = 1; next}; !(($1,$2, $3) in m)' \
    /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.bed \
@@ -112,7 +112,7 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.bed -m 18 -j  /change/path/to/Dmel/GCF_000001215.4_18m10G.jelly -k 5 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
    ```  
    - For Repetitive oligos  
-<sup> Note: Use the male genome without the target  chromosome to make the kmer dictionary. </sup>  
+<sup> Note: Use the male genome without the target chromosome to generate the kmer dictionary. </sup>  
    ```bash  
    #Create kmer dictionary
    jellyfish count /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna -C -m 18 -s 10G -t 10 -o /change/path/to/Dmel/GCF_000001215.4_18m10G_NoChr4.jelly # Use the same file used in step2
@@ -127,11 +127,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    #Activate the Nupack environment
    conda activate Nupack
    ```
-   - Single-copy
+   - For Single-copy oligos
    ```bash
     python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
-   - Repetitive
+   - For Repetitive oligos
    ```bash
    python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
@@ -140,11 +140,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
 <sup> Note: This step remove overlapping oligos by selecting a spacing between consecutive oligos.  
 Use our densityReduction.py script 
 
-   - Single-copy
+   - Single-copy oligos
    ```bash
    python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.bed -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
-   - Repetitive
+   - Repetitive oligos
    ```bash
    python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC.bed -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
@@ -152,7 +152,7 @@ Use our densityReduction.py script
 7. **Step 7, Option B: CombinedDensityReduction**  
 <sup> The CombinedDensityReduction script uses both lists of oligos to select single-copy oligos spaced by a desired distance (nt) and incorporates repetitive-oligos in positions where single-copy oligos are absent, while also considering a specific spacing with the preceding oligo. 
 Test different nucleotide distances between oligos to reach a density of 1 oligo/Kb. If this value of density could not be reached, run with “-nU 0 -nR 0” to retrieve all possible oligos without any overlap.  
-CombinedDensityReduction script provides two files: a file showing all the hits, and a non-redundant list of oligos (.BED). The Hit archive is used for statistical analysis of oligos along the target scaffold using R software, whereas the non-redundant list of oligos is used for probe construction. 
+CombinedDensityReduction script provides two files: a file showing all the hits, and a non-redundant list of oligos (.BED). The Hit file is used for statistical analysis of oligos along the target scaffold using R software, whereas the non-redundant list of oligos is used for probe construction. 
 
    ```bash
       python /change/path/to/CombinedDensityReduction.py -fU /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.bed \  
@@ -166,3 +166,8 @@ CombinedDensityReduction script provides two files: a file showing all the hits,
                                                          ========================
 
 Go to R to plot the density of Oligos along the chromosome target.
+
+## **Contact**  
+Please contact Henry Bonilla if you have any enquires.
+hnrb109@gmail.com
+henry.bonilla@usp.br
