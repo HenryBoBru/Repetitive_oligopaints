@@ -62,7 +62,7 @@ classification = []
 df = df.values.tolist()
 for gi in range(0,len(df)):
     if df[gi][1] == 'NA': df[gi][1] = 0.0
-    else: pd.to_numeric(df[gi][1], errors='coerce').fillna(0))
+    else: pd.to_numeric(df[gi][1], errors='coerce').fillna(0)
 
     if df[gi][0] >= no_vsck and df[gi][1] >= per_vscuk:
         classification.append('Inferred Chr Y')
