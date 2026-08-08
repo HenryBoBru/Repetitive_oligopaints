@@ -14,8 +14,8 @@ fastq-dump --gzip SRR789669 &
 
 # Run Y identification
 # Using 15mer
-nohup bash OligoY/scripts/ipda_target-inference_YGSv2.sh -k 18 -y SRR364796.fastq.gz -x SRR789669.fastq.gz -t Dmir106.fasta -q 10 -m 2 -f 4 -g 2 -v 20 -p 75 -o YGS_result15/ 
+nohup bash OligoY/scripts/ipda_target-inference_YGSv2.sh -k 18 -y SRR364796.fastq.gz -x SRR789669.fastq.gz -t Dmir106.fasta -q 10 -m 2 -f 4 -g 2 -v 20 -p 80 -o YGS_result15/ 
 
 # Using 18mer
-nohup bash OligoY/scripts/ipda_target-inference_YGSv2.sh -k 15 -y SRR364796.fastq.gz -x SRR789669.fastq.gz -t Dmir106.fasta -q 10 -m 2 -f 4 -g 2 -v 20 -p 75 -o YGS_result18/ 
+nohup bash OligoY/scripts/ipda_target-inference_YGSv2.sh -k 15 -y SRR364796.fastq.gz -x SRR789669.fastq.gz -t Dmir106.fasta -q 10 -m 2 -f 4 -g 2 -v 20 -p 80 -o YGS_result18/ 
 
