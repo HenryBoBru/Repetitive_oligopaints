@@ -3,7 +3,7 @@
 usage(){
 echo '
 Written by Isabela Almeida 
-Last modified Aug 8, 2026 by Henry Bonilla
+Last modified Aug 8, 2026 by Henry Bonilla (v2)
 
 Description: Runs YGS (Original Version), including the preprocessing step for
 the required input files with Jellyfish.
