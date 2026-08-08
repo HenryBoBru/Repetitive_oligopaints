@@ -25,7 +25,7 @@ We successfully validated the specificity of our oligo libraries through fluores
    ```bash
    git clone https://github.com/beliveau-lab/OligoMiner.git
    cd OligoMiner
-   conda create --name OligoMiner numpy scipy biopython==1.76 scikit-learn python=2.7 bowtie2=2.3.5.1 jellyfish=2.2.10
+   conda create --name OligoMiner -c bioconda -c conda-forge numpy scipy biopython==1.76 scikit-learn python=2.7 bowtie2=2.3.5.1 jellyfish=2.2.10
    conda activate OligoMiner 
    ```  
    **Note:** OligoMiner requires specific software versions to work correctly.
