@@ -52,12 +52,12 @@ We successfully validated the specificity of our oligo libraries through fluores
    - Male genome assembly without the target chromosome/region (.fasta) 
 
 ## **Pipeline**
-For demostration purposes, we will show the scripts to desing oligos for chr4 of D. melanogaster.
+For demostration purposes, we will show the scripts to desing oligos for chrXL of D. miranda.
 
 1. **Discover candidate oligos**  
    ```bash
    conda activate OligoMiner
-   python /change/path/to/OligoMiner/blockParse.py -O -l 40 -L 46 -t 47 -T 52 -f /change/path/to/chr4.fasta -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap # See OligoMiner article for details (paramethers, etc)
+   python /change/path/to/OligoMiner/blockParse.py -O -l 40 -L 46 -t 47 -T 52 -f /change/path/to/chrXL.fasta -o /change/path/to/Dmmir_oligos/Dmir_chrXL_string_lap # See OligoMiner article for details (paramethers, etc)
    ```
 2. **Mapping candidate oligos to genome**  
 Align to complete male genome (for single-copy oligos) and to male genome without the target chromosome (to get single copy and repetitive oligos)
@@ -65,25 +65,25 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    - For single-copy oligos
    ```bash
    #Index the genome
-   bowtie2-build /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna /change/path/to/Dmel/Dmel_complete # index the genome to map oligos
+   bowtie2-build /change/path/to/Dmir/Dmir106.fasta /change/path/to/Dmir/Dmir_complete # index the genome to map oligos
    #Mapping     
-   bowtie2 -x /change/path/to/Dmel/Dmel_complete  -U /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.sam
+   bowtie2 -x /change/path/to/Dmir/Dmir_complete  -U /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmmir_oligos/Dmmir_chrXL_string_lap.VS.sam
    ```
    - For single copy + repetitive oligos
    ```bash
-   You can use: sed -e '/NC_004353.4/,+1d' /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna > /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna # to remove the target chromosome of the male genome assembly
+   You can use: sed -e '/XL/,+1d' /change/path/to/Dmir/Dmir106.fasta > /change/path/to/Dmir/Dmir106_NoChrXL.fna # to remove the target chromosome of the male genome assembly
    ```
    ```bash
    #Index the genome without target chromosome
-   bowtie2-build /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna /change/path/to/Dmel/Dmel_NoChr4 # index the genome to map oligos
+   bowtie2-build /change/path/to/Dmir/Dmir106_NoChrXL.fna /change/path/to/Dmir/Dmir_NoChrXL # index the genome to map oligos
    #Mapping        
-   bowtie2 -x /change/path/to/Dmel/Dmel_NoChr4 -U /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All.sam
+   bowtie2 -x /change/path/to/Dmir/Dmir_NoChrXL -U /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All.sam
    ```
 
 3. **Select single-copy oligos** 
    ```bash
    conda activate OligoMiner
-   python /change/path/to/OligoMiner/outputClean.py -u -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.sam -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc
+   python /change/path/to/OligoMiner/outputClean.py -u -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.sam -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc
    ```
    
 4. **Select repetitive oligos**  
@@ -91,14 +91,14 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    
    - Obtain all oligos
    ```bash
-   python /change/path/to/OligoMiner/outputClean.py -0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All.sam -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All
+   python /change/path/to/OligoMiner/outputClean.py -0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All.sam -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All
    ```
    - Obtain repetitive oligos
    ```bash
    awk 'FILENAME != ARGV[2] { m[$1,$2, $3] = 1; next}; !(($1,$2, $3) in m)' \
-   /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.bed \
-   /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.All.bed \
-   > /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.bed 
+   /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.bed \
+   /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All.bed \
+   > /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.bed 
    ```
 5. **Filtering using Kmer approach**  
   
@@ -106,19 +106,19 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    ```bash
    conda activate OligoMiner
    #Create kmer dictionary
-   jellyfish count /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna -C -m 18 -s 10G -t 10 -o /change/path/to/Dmel/GCF_000001215.4_18m10G.jelly # Create a 18-Kmer dictionary for D.mel genome. The size of the dictionary depends on the genome size. 
+   jellyfish count /change/path/to/Dmir/Dmir106.fasta -C -m 18 -s 300M -t 10 -o /change/path/to/Dmir/Dmir106_18m300M.jelly # Create a 18-Kmer dictionary for D.mir genome. The size of the dictionary depends on the genome size. 
    
    #Kmer filter
-   python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.bed -m 18 -j  /change/path/to/Dmel/GCF_000001215.4_18m10G.jelly -k 5 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
+   python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.bed -m 18 -j  /change/path/to/Dmir/Dmir106_18m300M.jelly -k 5 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
    ```  
    - For Repetitive oligos  
 <sup> Note: Use the male genome without the target chromosome to generate the kmer dictionary. </sup>  
    ```bash  
    #Create kmer dictionary
-   jellyfish count /change/path/to/Dmel/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_NoChr4.fna -C -m 18 -s 10G -t 10 -o /change/path/to/Dmel/GCF_000001215.4_18m10G_NoChr4.jelly # Use the same file used in step2
+   jellyfish count /change/path/to/Dmir/Dmir106_NoChrXL.fna -C -m 18 -s 300M -t 10 -o /change/path/to/Dmir/Dmir106_18m300M_NoChrXL.jelly # Use the same file used in step2
    
    #Kmer filter
-   python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.bed -m 18 -j  /change/path/to/Dmel/GCF_000001215.4_18m10G_NoChr4.jelly -k 5 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
+   python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.bed -m 18 -j  /change/path/to/Dmir/Dmir106_18m300M_NoChrXL.jelly -k 5 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
    ```
 
 6. **Filtering of secondary structure (StructureCheck)**
@@ -129,11 +129,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    ```
    - For Single-copy oligos
    ```bash
-    python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC  # See OligoMiner article for details (paramethers, etc)
+    python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
    - For Repetitive oligos
    ```bash
-   python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC  # See OligoMiner article for details (paramethers, etc)
+   python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
 
 7. **Step 7, Option A: Individual Density Reduction**  
@@ -142,11 +142,11 @@ Use our densityReduction.py script
 
    - Single-copy oligos
    ```bash
-   python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.bed -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.n0.bed # -n is the spacing between consecutive oligos
+   python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC.bed -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
    - Repetitive oligos
    ```bash
-   python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC.bed -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC.n0.bed # -n is the spacing between consecutive oligos
+   python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC.bed -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
 
 7. **Step 7, Option B: CombinedDensityReduction**  
@@ -155,11 +155,11 @@ Test different nucleotide distances between oligos to reach a density of 1 oligo
 CombinedDensityReduction script provides two files: a file showing all the hits, and a non-redundant list of oligos (.BED). The Hit file is used for statistical analysis of oligos along the target scaffold using R software, whereas the non-redundant list of oligos is used for probe construction. 
 
    ```bash
-      python /change/path/to/CombinedDensityReduction.py -fU /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.Sc.m18.SC.bed \  
-   -fR /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.R.m18.SC.bed \  
+      python /change/path/to/CombinedDensityReduction.py -fU /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC.bed \  
+   -fR /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC.bed \  
    -nU 0 -nR 0 \  
-   -o /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.m18.SC_nU0_nR0.bed \  
-   -outHits /change/path/to/Dmel_oligos/Dmel_chr4_string_lap.VS.m18.SC_nU0_nR0.Hits
+   -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.m18.SC_nU0_nR0.bed \  
+   -outHits /change/path/to/Dmir_oligos/Dmir_chr4_string_lap.VS.m18.SC_nU0_nR0.Hits
    ```
                                                          ========================
                                                                    #END!
