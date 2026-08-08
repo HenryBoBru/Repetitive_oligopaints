@@ -3,6 +3,7 @@
 git clone https://github.com/isabela42/OligoY.git # replace ipda_target-inference_YGS in OligoY/scripts/ with version (v2)
 chmod +x OligoY/scripts/CarvalhoClark2013/*  # give permissions
 conda create -n jellyfishV226_env -c bioconda -c conda-forge jellyfish=2.2.6
+conda install pandas seaborn matplotlib # install these modules in jellyfishV226_env
 perl -MCPAN -e 'install PerlIO::gzip' # install perl modules
 perl -MCPAN -e 'install Bit::Vector' 
 perl -MCPAN -e 'install Carp::Clan'
