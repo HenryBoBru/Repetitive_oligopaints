@@ -33,3 +33,33 @@ blastn -query rtPrimers.fasta -subject T7promoter3end.fasta -outfmt '6 qseqid ss
 python ~/OligoMiner-master/bedToFasta.py -f oligoChr4_U.bed -o oligoChr4_U # From Bed to Fasta
 blastn -query IndexPrimers.fasta -subject oligoChr4_U.fasta -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -word_size 12 > IndexPrimersVsChr4.blastOut.txt
 
+#### Step 6: Align RTprimers to Oligopaints (or OligoPool) (word_size=12) 
+blastn -query rtPrimers.fasta -subject oligoChr4_U_clean.fasta -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -word_size 20 > rtprimersVsChr4.blastOut.txt #
+
+#### Step7: Add the Index and RT primers to the oligopaints
+
+python     # fasta to bed
+
+pf1=GCCCGTATTCCCGCTTGC
+pf2=CCAGTGCTCGTGTGAGAAGTC
+pf3=ATCCTAGCCCATACGGCAATG
+pf4=CAGGTCGAGCCCTGTAGTACG
+pr1=CACACGCTCTTCCGTTCTATG
+pr2=GCTGAACCCTGTACCTAG
+pr3=ATGCGCCAATTCCGGTT
+rt1=CGCAACGCTTGGGACGGTTCCAATCGGATC
+rt2=CCGTCGTCTCCGGTCCACCGTTGCGCTTAC
+rt3=ACAAATCCGACCAGATCGGACGATCATGGG
+rt4=CGAATGCTCTGGCCTCGAACGAACGATAGC
+
+# chr4 (10337 oligos), pf2 and pr2 and rt4
+cat <(cut -f 4 oligoChr4_U_clean.bed) | while read target; do echo -e "${pf2}${rt4}${target}${pr2}" >> oligosChr4_U_final.txt; done
+
+#### Step8: Final double-check, align Index and RT primers to the final probe
+# No extra alignment should be expect
+
+awk '{print $1"\t"$2"\t"$3"\t"$5"\t"$4}' <(paste <(cut -f 1,2,3,5 oligoChr4_U_clean.bed) oligosChr4_U_final.txt) > oligosChr4_U_final.bed  # made a Bed with complete probes to convert to fasta
+python ~/OligoMiner-master/bedToFasta.py -f oligosChr4_U_final.bed -o oligosChr4_U_final # from bed to fasta
+blastn -query IndexRTprimersChr4.fasta -subject oligosChr4_U_final.fasta -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -word_size 12 > IndexRTprimerVsOligosChr4.blastOut.txt 
+cut -f 1 probePrimersVsChr4.blastOut.txt | sort | uniq -c -u  # count alignments
+
