@@ -62,14 +62,14 @@ For demostration purposes, we will show the scripts to desing oligos for chrXL o
 2. **Mapping candidate oligos to genome**  
 Align to complete male genome (for single-copy oligos) and to male genome without the target chromosome (to get single copy and repetitive oligos)
 
-   - For single-copy oligos
+   **- For single-copy oligos**
    ```bash
    #Index the genome
    bowtie2-build /change/path/to/Dmir/Dmir106.fasta /change/path/to/Dmir/Dmir_complete # index the genome to map oligos
    #Mapping     
    bowtie2 -x /change/path/to/Dmir/Dmir_complete  -U /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.fastq --very-sensitive-local -k 2 --no-hd -t -p 4 -S /change/path/to/Dmmir_oligos/Dmmir_chrXL_string_lap.VS.sam
    ```
-   - For single copy + repetitive oligos
+   **- For single copy + repetitive oligos**
    ```bash
    You can use: sed -e '/XL/,+1d' /change/path/to/Dmir/Dmir106.fasta > /change/path/to/Dmir/Dmir106_NoChrXL.fna # to remove the target chromosome of the male genome assembly
    ```
@@ -89,11 +89,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
 4. **Select repetitive oligos**  
 <sup> Note: The complete set of oligos are firstly obtained. The complete set of oligos are made up of single-copy and repetitive oligos. Therefore, we have to subtract single-copy oligos (step 3 output) from the complete set of oligos. </sup>
    
-   - Obtain all oligos
+   **- Obtain all oligos**
    ```bash
    python /change/path/to/OligoMiner/outputClean.py -0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All.sam -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.All
    ```
-   - Obtain repetitive oligos
+   **- Obtain repetitive oligos**
    ```bash
    awk 'FILENAME != ARGV[2] { m[$1,$2, $3] = 1; next}; !(($1,$2, $3) in m)' \
    /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.bed \
@@ -102,7 +102,7 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    ```
 5. **Filtering using Kmer approach**  
   
-   - For Single-copy oligos  
+   **- For Single-copy oligos**  
    ```bash
    conda activate OligoMiner
    #Create kmer dictionary
@@ -111,7 +111,7 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    #Kmer filter
    python2.7 /change/path/to/OligoMiner/kmerFilter.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.bed -m 18 -j  /change/path/to/Dmir/Dmir106_18m300M.jelly -k 5 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18 # Run 18-Kmer filter using a threshold 5 (-k). See OligoMiner article for details.
    ```  
-   - For Repetitive oligos  
+   **- For Repetitive oligos**  
 <sup> Note: Use the male genome without the target chromosome to generate the kmer dictionary. </sup>  
    ```bash  
    #Create kmer dictionary
@@ -127,11 +127,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
    #Activate the Nupack environment
    conda activate Nupack
    ```
-   - For Single-copy oligos
+   **- For Single-copy oligos**
    ```bash
     python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
-   - For Repetitive oligos
+   **- For Repetitive oligos**
    ```bash
    python3.6 /change/path/to/OligoY/scripts/Beliveau2018/structureCheckpy3v2.py -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.bed -T 37 -t 0.1 -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC  # See OligoMiner article for details (paramethers, etc)
    ```
@@ -140,11 +140,11 @@ Align to complete male genome (for single-copy oligos) and to male genome withou
 <sup> Note: This step remove overlapping oligos by selecting a spacing between consecutive oligos.  
 Use our densityReduction.py script 
 
-   - Single-copy oligos
+   **- Single-copy oligos**
    ```bash
    python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC.bed -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.Sc.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
-   - Repetitive oligos
+   **- Repetitive oligos**
    ```bash
    python /change/path/to/densityReduction.py -n 0 -f /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC.bed -o /change/path/to/Dmir_oligos/Dmir_chrXL_string_lap.VS.R.m18.SC.n0.bed # -n is the spacing between consecutive oligos
    ```
